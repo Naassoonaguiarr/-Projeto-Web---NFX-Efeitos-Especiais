@@ -167,7 +167,7 @@ function exibirResultado(resultadoFormatado, dadosCompletos) {
   resultadoPre.style.display = 'block';
 
   const salvarBotao = document.createElement('button');
-  salvarBotao.textContent = 'Salvar em TXT';
+  salvarBotao.textContent = 'Encaminhar via Whatasapp';
   salvarBotao.onclick = () => {
     salvarDados(resultadoFormatado + '\n\n' + dadosCompletos);
     criarLinkWhatsApp(); // Chamada da função criarLinkWhatsApp
@@ -245,7 +245,7 @@ function exibirResultado(resultadoFormatado, dadosCompletos) {
       mensagem = `Olá, gostaria de fazer um pedido:\n\nTipo: Somente Compra\nNome do Cliente: ${nomeClienteCompra}\nHorário de Entrega: ${horarioEntregaCompra}\nPlaca escolhida: ${placaEscolhidaCompra}x${placaEscolhidaCompra} cm\nCusto total: R$ ${custoTotalCompra.toFixed(2)}`;
     }
 
-    const numeroWhatsApp = '5511912345678'; // Substitua pelo número de telefone do WhatsApp
+    const numeroWhatsApp = '5592994031642'; // Substitua pelo número de telefone do WhatsApp
     const linkWhatsApp = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${encodeURIComponent(mensagem)}`;
 
     window.open(linkWhatsApp, '_blank');
