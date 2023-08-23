@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Placas</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #e6f1f2;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 400px;
+  }
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #006666;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #006666;
+  }
+
+  select, input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #006666;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #005151;
+  }
+
+  #resultado {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: center;
+    color: #006666;
+  }
+
+  .resultado-container {
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  #resultado-formatado {
+    display: none;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+    overflow: auto;
+    color: #006666;
+  }
+
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.css">
+</head>
+<body>
+<div class="container">
+  <h2>Calculadora de Placas</h2>
+  <label for="tipo">Escolha o tipo:</label>
+  <select id="tipo" onchange="mostrarCampos()">
+    <option value="servico">Serviço</option>
+    <option value="compra">Somente Compra</option>
+  </select>
+  <div id="servicoCampos" style="display: none;">
+    <label for="nomeCompleto">Nome Completo:</label>
+    <input type="text" id="nomeCompleto">
+    <label for="enderecoEntrega">Endereço de Entrega:</label>
+    <input type="text" id="enderecoEntrega">
+    <label for="horarioEntrega">Horário de Entrega:</label>
+    <input type="text" id="horarioEntrega" class="flatpickr">
+    <label for="altura">Altura da parede (m):</label>
+    <input type="number" id="altura" step="0.01" min="0">
+    <label for="largura">Largura da parede (m):</label>
+    <input type="number" id="largura" step="0.01" min="0">
+    <label for="placa">Escolha a placa:</label>
+    <select id="placa">
+      <option value="30">30x30 cm</option>
+    </select>
+  </div>
+  <div id="compraCampos" style="display: none;">
+    <label for="nomeClienteCompra">Nome do Cliente:</label>
+    <input type="text" id="nomeClienteCompra">
+    <label for="horarioEntregaCompra">Horário de Entrega:</label>
+    <input type="text" id="horarioEntregaCompra" class="flatpickr">
+    <label for="placaCompra">Escolha a placa:</label>
+    <select id="placaCompra">
+      <option value="30">30x30 cm</option>
+    </select>
+  </div>
+  <button onclick="calcularPlacas()">Calcular</button>
+  <p id="resultado"></p>
+  <div class="resultado-container">
+    <h3>Resultado</h3>
+    <pre id="resultado-formatado"></pre>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
+<script>
+  const horarioInput = document.getElementById('horarioEntrega');
+  flatpickr(horarioInput, {
+    enableTime: true,
+    dateFormat: "Y-m-d H:i",
+    minDate: "today",
+    locale: "pt"
+  });
+
+  const horarioEntregaInput = document.getElementById('horarioEntregaCompra');
+  flatpickr(horarioEntregaInput, {
+    enableTime: true,
+    dateFormat: "Y-m-d H:i",
+    minDate: "today",
+    locale: "pt"
+  });
+
+  function mostrarCampos() {
+    const tipo = document.getElementById('tipo').value;
+    const servicoCampos = document.getElementById('servicoCampos');
+    const compraCampos = document.getElementById('compraCampos');
+
+    if (tipo === 'servico') {
+      servicoCampos.style.display = 'block';
+      compraCampos.style.display = 'none';
+    } else if (tipo === 'compra') {
+      servicoCampos.style.display = 'none';
+      compraCampos.style.display = 'block';
+    }
+  }
+function exibirResultado(resultadoFormatado, dadosCompletos) {
+  const resultadoPre = document.getElementById('resultado-formatado');
+  resultadoPre.innerHTML = `${resultadoFormatado}\n\n${dadosCompletos}`;
+  resultadoPre.style.display = 'block';
+
+  const salvarBotao = document.createElement('button');
+  salvarBotao.textContent = 'Salvar em TXT';
+  salvarBotao.onclick = () => {
+    salvarDados(resultadoFormatado + '\n\n' + dadosCompletos);
+    criarLinkWhatsApp(); // Chamada da função criarLinkWhatsApp
+  };
+  resultadoPre.appendChild(salvarBotao);
+}
+
+  function calcularPlacas() {
+    const tipo = document.getElementById('tipo').value;
+    let resultadoTexto = '';
+    let dadosCompletos = '';
+
+    if (tipo === 'servico') {
+      const nomeCompleto = document.getElementById('nomeCompleto').value;
+      const enderecoEntrega = document.getElementById('enderecoEntrega').value;
+      const horarioEntrega = horarioInput.value;
+      const altura = parseFloat(document.getElementById('altura').value);
+      const largura = parseFloat(document.getElementById('largura').value);
+      const placaTamanho = parseFloat(document.getElementById('placa').value);
+      const valorPlaca = 3.50;
+
+      const areaParede = altura * largura;
+      const areaPlaca = (placaTamanho / 100) ** 2;
+      const placasNecessarias = Math.ceil(areaParede / areaPlaca);
+      const custoTotal = placasNecessarias * valorPlaca;
+
+      resultadoTexto = `Placas necessárias: <strong>${placasNecessarias}</strong><br>Custo total: <strong>R$ ${custoTotal.toFixed(2)}</strong>`;
+
+      dadosCompletos = `Tipo: Serviço\nNome Completo: ${nomeCompleto}\nEndereço de Entrega: ${enderecoEntrega}\nHorário de Entrega: ${horarioEntrega}\nAltura da parede: ${altura} m\nLargura da parede: ${largura} m\nPlaca escolhida: ${placaTamanho}x${placaTamanho} cm\nPlacas necessárias: ${placasNecessarias}\nCusto total: R$ ${custoTotal.toFixed(2)}`;
+    } else if (tipo === 'compra') {
+      const nomeClienteCompra = document.getElementById('nomeClienteCompra').value;
+      const horarioEntregaCompra = horarioEntregaInput.value;
+      const placaEscolhidaCompra = parseFloat(document.getElementById('placaCompra').value);
+      const valorPlacaCompra = 3.50;
+
+      const custoTotalCompra = placaEscolhidaCompra * valorPlacaCompra;
+
+      resultadoTexto = `Placas necessárias: <strong>${placaEscolhidaCompra}</strong><br>Custo total: <strong>R$ ${custoTotalCompra.toFixed(2)}</strong>`;
+
+      dadosCompletos = `Tipo: Somente Compra\nNome do Cliente: ${nomeClienteCompra}\nHorário de Entrega: ${horarioEntregaCompra}\nPlaca escolhida: ${placaEscolhidaCompra}x${placaEscolhidaCompra} cm\nCusto total: R$ ${custoTotalCompra.toFixed(2)}`;
+    }
+
+    document.getElementById('resultado').innerHTML = resultadoTexto;
+
+    exibirResultado(resultadoTexto, dadosCompletos);
+  }
+
+  function criarLinkWhatsApp() {
+    const tipo = document.getElementById('tipo').value;
+    let mensagem = '';
+
+    if (tipo === 'servico') {
+      const nomeCompleto = document.getElementById('nomeCompleto').value;
+      const enderecoEntrega = document.getElementById('enderecoEntrega').value;
+      const horarioEntrega = horarioInput.value;
+      const altura = parseFloat(document.getElementById('altura').value);
+      const largura = parseFloat(document.getElementById('largura').value);
+      const placaTamanho = parseFloat(document.getElementById('placa').value);
+      const valorPlaca = 3.50;
+
+      const areaParede = altura * largura;
+      const areaPlaca = (placaTamanho / 100) ** 2;
+      const placasNecessarias = Math.ceil(areaParede / areaPlaca);
+      const custoTotal = placasNecessarias * valorPlaca;
+
+      mensagem = `Olá, gostaria de fazer um pedido:\n\nTipo: Serviço\nNome Completo: ${nomeCompleto}\nEndereço de Entrega: ${enderecoEntrega}\nHorário de Entrega: ${horarioEntrega}\nAltura da parede: ${altura} m\nLargura da parede: ${largura} m\nPlaca escolhida: ${placaTamanho}x${placaTamanho} cm\nPlacas necessárias: ${placasNecessarias}\nCusto total: R$ ${custoTotal.toFixed(2)}`;
+    } else if (tipo === 'compra') {
+      const nomeClienteCompra = document.getElementById('nomeClienteCompra').value;
+      const horarioEntregaCompra = horarioEntregaInput.value;
+      const placaEscolhidaCompra = parseFloat(document.getElementById('placaCompra').value);
+      const valorPlacaCompra = 3.50;
+
+      const custoTotalCompra = placaEscolhidaCompra * valorPlacaCompra;
+
+      mensagem = `Olá, gostaria de fazer um pedido:\n\nTipo: Somente Compra\nNome do Cliente: ${nomeClienteCompra}\nHorário de Entrega: ${horarioEntregaCompra}\nPlaca escolhida: ${placaEscolhidaCompra}x${placaEscolhidaCompra} cm\nCusto total: R$ ${custoTotalCompra.toFixed(2)}`;
+    }
+
+    const numeroWhatsApp = '5511912345678'; // Substitua pelo número de telefone do WhatsApp
+    const linkWhatsApp = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${encodeURIComponent(mensagem)}`;
+
+    window.open(linkWhatsApp, '_blank');
+  }
+
+  function salvarDados(texto) {
+    const blob = new Blob([texto], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'informacoes.txt';
+    a.click();
+  }
+</script>
+</body>
+</html>
