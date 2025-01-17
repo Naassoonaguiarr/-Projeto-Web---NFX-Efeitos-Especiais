@@ -1,0 +1,120 @@
+/* Adicione este arquivo com os estilos específicos do editor */
+.edit-mode .editable {
+    background-color: rgba(52, 152, 219, 0.1);
+    cursor: pointer;
+}
+
+.edit-mode .editable:hover {
+    background-color: rgba(52, 152, 219, 0.2);
+}
+
+.edit-input {
+    width: 100%;
+    padding: 4px 8px;
+    border: 2px solid var(--accent-color);
+    border-radius: 4px;
+    outline: none;
+}
+
+.modified-row {
+    background-color: rgba(241, 196, 15, 0.1);
+}
+
+.modified-cell {
+    position: relative;
+}
+
+.modified-cell::after {
+    content: '*';
+    color: var(--warning-color);
+    position: absolute;
+    top: 2px;
+    right: 4px;
+}
+
+/* Adicione mais estilos conforme necessário */
+
+/* Estilos específicos do editor */
+.editable {
+    position: relative;
+}
+
+.editable.modified::after {
+    content: '*';
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    color: var(--warning-color);
+    font-weight: bold;
+}
+
+.actions {
+    white-space: nowrap;
+    width: 1%;
+}
+
+.btn-group-sm > .btn,
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+}
+
+/* Tooltip customizado */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+}
+
+[data-tooltip]:hover:before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Estilo para células em edição */
+.editing {
+    padding: 0 !important;
+}
+
+.editing .edit-input {
+    margin: 0;
+    height: 100%;
+    border: 2px solid var(--primary-color);
+}
+
+/* Estilo para linhas modificadas */
+.modified-row {
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+/* Estilo para células inválidas */
+.invalid-cell {
+    border: 1px solid var(--danger-color);
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+/* Animações */
+@keyframes highlightCell {
+    0% { background-color: rgba(13, 110, 253, 0.2); }
+    100% { background-color: transparent; }
+}
+
+.highlight {
+    animation: highlightCell 1s ease;
+}

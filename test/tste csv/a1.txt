@@ -1,0 +1,9 @@
+﻿Pyromac firing system
+Cue;Time;Delay;Address (Mod,Pins);"Note";Duration
+0001;00,00,03.92;00,00,00.00;001,01;"Comet, yellow with Crackling";00,00,00.01
+0001;00,00,04.97;00,00,00.00;001,02;"Comet, yellow with Crackling";00,00,00.01
+0001;00,00,06.35;00,00,00.00;001,03;"Comet, yellow with Crackling";00,00,00.01
+0001;00,00,07.92;00,00,00.00;001,04;"Comet, yellow with Crackling";00,00,00.01
+0001;00,00,09.30;00,00,00.00;001,05;"Comet, yellow with Crackling";00,00,00.01
+0001;00,00,11.60;00,00,00.00;001,06;"Comet with tail & crossette, red";00,00,00.01
+end

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Dados CSV</title>
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
+    <link href="styles/editor.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header com Navegação -->
+    <div class="header-nav">
+        <div class="nav-left">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Voltar
+            </a>
+        </div>
+        <div class="nav-title">
+            <h1><i class="fas fa-table"></i> Editor de Dados CSV</h1>
+        </div>
+    </div>
+
+    <!-- Container Principal -->
+    <div class="main-container">
+        <!-- Upload de Arquivo -->
+        <div class="upload-container mb-4" id="uploadSection">
+            <div class="upload-box">
+                <input type="file" id="csvFile" accept=".csv" class="d-none">
+                <button class="btn btn-primary btn-lg" id="uploadBtn">
+                    <i class="fas fa-upload"></i>
+                    Carregar Arquivo CSV
+                </button>
+                <div class="mt-2 text-muted">ou arraste um arquivo CSV aqui</div>
+            </div>
+        </div>
+
+        <!-- Editor Section (inicialmente oculto) -->
+        <div id="editorSection" style="display: none;">
+            <!-- Barra de Ferramentas -->
+            <div class="tools-container mb-4">
+                <div class="tools-grid">
+                    <div class="tool-group">
+                        <button id="saveChangesBtn" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Salvar
+                        </button>
+                        <button id="undoBtn" class="btn btn-warning">
+                            <i class="fas fa-undo"></i>
+                            Desfazer
+                        </button>
+                        <button id="exportBtn" class="btn btn-success">
+                            <i class="fas fa-file-export"></i>
+                            Exportar
+                        </button>
+                        <button id="addRowBtn" class="btn btn-info">
+                            <i class="fas fa-plus"></i>
+                            Nova Linha
+                        </button>
+                    </div>
+                    <div class="tool-group">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar...">
+                        </div>
+                        <select id="moduleFilter" class="form-select mt-2">
+                            <option value="">Todos os Módulos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela -->
+            <div class="table-responsive">
+                <table class="table table-hover" id="dataTable">
+                    <thead>
+                        <tr id="headerRow"></tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Paginação -->
+            <div class="pagination-container mt-4">
+                <div id="pagination" class="pagination"></div>
+                <div class="rows-per-page">
+                    <select id="rowsPerPage" class="form-select">
+                        <option value="10">10 linhas</option>
+                        <option value="25">25 linhas</option>
+                        <option value="50">50 linhas</option>
+                        <option value="100">100 linhas</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregando...</span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Aplicação -->
+    <script src="scripts/DataManager.js"></script>
+    <script src="scripts/UIController.js"></script>
+    <script src="scripts/TableEditor.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const editor = new TableEditor();
+            window.editor = editor; // Para debug
+        });
+    </script>
+</body>
+</html>
